@@ -35,12 +35,12 @@ The purpose of this project is to enhance night-riding safety, demonstrate real-
 
 ### 3. System Block Diagram
 
-![ESE 5190 Final proposal #3](/images/ESE%205190%20Final%20proposal%20%233.png)
+![ESE 5190 Final proposal #3](./images/ESE%205190%20Final%20proposal%20%233.png)
 
 ### 4. Design Sketches
 
-![Final proposal #4](/images/Final%20proposal%20%234%20Front.jpg)
-![Final proposal #4](/images/Final%20proposal%20%234%20Rear.jpg)
+![Final proposal #4](./images/Final%20proposal%20%234%20Front.jpg)
+![Final proposal #4](./images/Final%20proposal%20%234%20Rear.jpg)
 
 This project needs 3D printing to achieve the vision looks like the sketches and some function, such as being connected and fixed to the bicycle frame or seat.
 
@@ -127,44 +127,44 @@ Google Sheet for BOM link: https://docs.google.com/spreadsheets/d/1bHwMPB5nC805x
 
 **Scope:** A tabletop (or bike-mounted) live demo showing all core features under realistic conditions. Each goal has a clear pass/fail criterion tied to the SRS.
 
-### G1 — Turn Signal Modes at Maximum Brightness
+#### G1 — Turn Signal Modes at Maximum Brightness
 
 - The system **shall** illuminate only the left (or right) LED panel when the corresponding button is pressed, and **shall** illuminate **both** panels when both buttons are pressed.
 - Blink frequency **shall** be **4–6 Hz** in all turn modes; LEDs **shall** operate at maximum brightness.
 - **Acceptance:** A ≥60 fps video and logic log **shall** confirm 4–6 Hz and correct side(s) per input.
 
-### G2 — Proximity-Based Warning and Alert
+#### G2 — Proximity-Based Warning and Alert
 
 - When the measured distance is in **(1.5 m, 2.5 m)**, the brake LED **shall** enter **warning flash** at **4–6 Hz**.
 - When the measured distance is **≤ 1.5 m**, the brake LED **shall** enter **burst strobe** at **8–12 Hz**, and the buzzer **shall** beep in 1:1 sync with flashes.
 - **Acceptance:** Floor marks at 3 m/2.5 m/1.5 m and synchronized audio/video **shall** prove threshold switching and sync.
 
-### G3 — Brake Steady from Speed/Deceleration
+#### G3 — Brake Steady from Speed/Deceleration
 
 - With the speed sensor installed, when speed is **0** or longitudinal deceleration is **≥ 0.5 m/s²**, the brake LED **shall** remain **steadily ON**.
 - **Acceptance:** Logged speed/acceleration and LED state **shall** show steady ON during stop and ≥0.5 m/s² decel.
 
-### G4 — Ultrasonic Performance Window
+#### G4 — Ultrasonic Performance Window
 
 - The ultrasonic ranging **shall** operate over **0.2–5.0 m** at an update rate **≥ 10 Hz** and error **≤ ±10 %** in the **0.5–3.0 m** region.
 - **Acceptance:** Bench measurements at known targets **shall** meet update rate and error bounds.
 
-### G5 — Link-Loss Safety
+#### G5 — Link-Loss Safety
 
 - On BLE link loss of **≥ 1.0 s**, the system **shall** hold the brake LED in **warning flash** and **shall** ignore turn commands until the link recovers.
 - **Acceptance:** Induced link loss **shall** produce persistent warning flash and command ignore; normal control **shall** resume on reconnection.
 
-### G6 — LCD Telemetry
+#### G6 — LCD Telemetry
 
 - The LCD **shall** display **current speed** updated **≥ 5 Hz** and **shall** show the active mode text (`Left/Right/Both/Brake/Warning/Burst/Link-Loss`).
 - **Acceptance:** Time-stamped screenshots/video **shall** verify update rate and correct mode text.
 
-### G7 — Configuration & Persistence
+#### G7 — Configuration & Persistence
 
 - Thresholds (`D_warn=2.5 m`, `D_alert=1.5 m`) and buzzer enable **shall** be configurable and **shall** persist across power cycles via non-volatile storage.
 - **Acceptance:** After reconfiguration and reboot, proximity behavior and buzzer state **shall** match new settings.
 
-### G8 — Safety & Power Constraints
+#### G8 — Safety & Power Constraints
 
 - The device **shall not** be powered by Li-ion/LiPo packs; **power banks or AA/AAA** **shall** be used.
 - The assembled system **should** operate continuously for **≥ 10 min** at demo with no resets or unsafe temperatures.
@@ -194,21 +194,21 @@ From Tuesday until now, Jiaan has been working on the front enclosure. This incl
 At the same time, Tiancheng and Zibo have been working together on the rear enclosure. They are laying out the 45 LEDs, deciding the overall size of the rear light housing, and arranging the inside space for the battery, MCU, accelerometer and buck converter. They are also planning where to place the side facing ultrasonic distance sensor and the speaker so that everything fits cleanly in one unit.
 
 Even though most of the electronics are still missing, spending this week on the 3D design feels meaningful because it connects directly to how the final product will look and mount on a real bike. All three of us are using 3D printing for the first time, so we had to teach ourselves how to model the parts in Shapr3D and SolidWorks, and we already learned a lot from trying things, making mistakes and fixing them.
-![Front enclosure - top view](/images/Sprint%20Review%20%231%20F-Top.png)
+![Front enclosure - top view](./images/Sprint%20Review%20%231%20F-Top.png)
 
-![Front enclosure - back view](/images/Sprint%20Review%20%231%20F-Back.png)
+![Front enclosure - back view](./images/Sprint%20Review%20%231%20F-Back.png)
 
-![Front enclosure - back side view](/images/Sprint%20Review%20%231%20F-BackS.png)
+![Front enclosure - back side view](./images/Sprint%20Review%20%231%20F-BackS.png)
 
-![Front enclosure - bottom view](/images/Sprint%20Review%20%231%20F-Bottom.png)
+![Front enclosure - bottom view](./images/Sprint%20Review%20%231%20F-Bottom.png)
 
-![Front enclosure - front view](/images/Sprint%20Review%20%231%20F-Front.png)
+![Front enclosure - front view](./images/Sprint%20Review%20%231%20F-Front.png)
 
-![Front enclosure - front side view](/images/Sprint%20Review%20%231%20F-Fronts.png)
+![Front enclosure - front side view](./images/Sprint%20Review%20%231%20F-Fronts.png)
 
-![Rear enclosure - front view](/images/Sprint%20Review%20%231%20B-Front.png)
+![Rear enclosure - front view](./images/Sprint%20Review%20%231%20B-Front.png)
 
-![Rear enclosure - front side view](/images/Sprint%20Review%20%231%20B-FrontS.png)
+![Rear enclosure - front side view](./images/Sprint%20Review%20%231%20B-FrontS.png)
 
 ### Current state of project
 
@@ -233,10 +233,10 @@ Because the BOM components still have not arrived this week, the team was unable
 On the front-end side, Jiaan worked on the code and successfully implemented the functionality that allows the user to control the turn signals via the joystick. When the user moves the joystick, the corresponding blinking turn indicator icon is displayed on the LCD. This behavior was tested and validated using spare components available in the lab. In addition, the Bluetooth code for the front module has been completed, including both transmitting turn-signal commands and receiving speed data from the accelerometer. Once the actual components arrive, this code will be ready for full system testing. (Code is documented in the Velo Front file.)
 
 On the back-end side, Tiancheng and Zibo focused on the core low-level functional coding. They implemented the main framework for the rear module, including BLE command parsing, ultrasonic distance measurement, the basic system state machine, buzzer alert logic, and the system-level timer. These features have also been validated using lab hardware, providing a solid foundation for integrating additional components such as LEDs and the accelerometer in the next phase. (Code is documented in the Velo Rear file.)
-![3Dprint1](/images/3Dprint1.jpg)
-![3Dprint2](/images/3Dprint2.jpg)
-![3Dprint3](/images/3Dprint3.jpg)
-![FunctionalVerification](/images/FunctionalVerification.png)
+![3Dprint1](./images/3Dprint1.jpg)
+![3Dprint2](./images/3Dprint2.jpg)
+![3Dprint3](./images/3Dprint3.jpg)
+![FunctionalVerification](./images/FunctionalVerification.png)
 
 ### Current state of project
 
@@ -257,7 +257,7 @@ This approach will allow the team to continue making meaningful progress toward 
 ## MVP Demo
 
 1. *Show a system block diagram & explain the hardware implementation.*
-   ![NBD](/images/NewBlockDiagram.png)
+   ![NBD](./images/NewBlockDiagram.png)
 
    Compared with our initial project design, we had to make several adjustments because the ordered components have not arrived yet. To keep the project moving, we switched to parts available in the lab and still managed to implement all the basic functions. On the hardware side, for the front-end we replaced the original MCU with the lab's ESP32-WROOM, which also integrates Bluetooth and can communicate with the HC-05 module. We also simplified the user interface: instead of using two separate buttons for left and right turn signals as in the original design, we now use a single joystick to control both directions. This allows the user to operate the system with one hand and reduces overall complexity. For the display, we chose a smaller LCD screen that was available in the lab.
 
@@ -298,68 +298,48 @@ This approach will allow the team to continue making meaningful progress toward 
 
 ## Final Project Report
 
-
 ### 1. Video
-
 
 Here's the link to the video:
 [https://drive.google.com/file/d/1-fA520SwYSS5Ujw18yyUZQzBwJccTLxQ/view?usp=sharing](https://drive.google.com/file/d/1-fA520SwYSS5Ujw18yyUZQzBwJccTLxQ/view?usp=sharing)
 
-
 ### 2. Images
 
-
-![Final_Image_Rear](/images/Final_Image_Rear.jpg)
-![Final_Image_Together](/images/Final_Image_Together.jpg)
-
+![Final_Image_Rear](./images/Final_Image_Rear.jpg)
+![Final_Image_Together](./images/Final_Image_Together.jpg)
 
 ### 3. Results
 
-
 Our final system is a two-module smart bicycle lighting kit. The front handlebar unit is based on an ESP32-WROOM dev board with a joystick and LCD: the joystick selects left/right, and the ESP32 sends single-character commands over Bluetooth to the rear unit while also receiving basic data for on-screen status. The rear module uses an ATmega328PB to drive three LED functions (left/right turn, brake), a buzzer, an ultrasonic distance sensor, and an IMU for deceleration-based brake triggering. A timer-based state machine reads the turn-signal commands, the ultrasonic distance, and the IMU deceleration, then decides whether the rear light should stay idle, show a steady brake light, flash in a warning or burst pattern.
-
 
 Because many of the original BOM parts did not arrive on time, we substituted all parts to lab-available components, but we kept the behavior of the SRS/HRS as close to the original specification as possible. In practice, we successfully assembled all of the hardware and integrated every component into our 3D-printed front and rear models. We were able to demonstrate reliable turn-signal control, ultrasonic-triggered warning and burst modes, BLE link-loss safety behavior, and basic IMU-based brake detection during short walk tests.
 
-
 #### 3.1 Software Requirements Specification (SRS) Results
-
 
 Overall we achieved most of the originally defined SRS requirements, with a few intentional changes. We partially met SRS-07; in our final result, the front end only displays the acceleration returned by the accelerometer and does not calculate the velocity, because the LSM6DS0 acceleration remained noisy and our simple integration is not able to give a stable real-time speed estimate in the time available.
 
-
 In addition to meeting the basic turn-signal behavior in SRS-01, we also added a sequential "flowing" animation for the rear turn panels. Instead of blinking all 15 LEDs on a side at once, the firmware groups the WS2812B pixels into six rows and lights them in order while the turn signal is active. This creates a clear sweeping motion in the direction of the turn, making the rider’s intent more obvious to following drivers, similar to modern automotive sequential turn indicators.
 
-
-| ID     | Description                                                                                                                               | Validation Outcome                                                                                                                                                                                                                                                                                                                                                                           |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SRS-01 | The front joystick shall command Left, Right turn modes; the corresponding rear LED panels shall blink at 4–6 Hz at maximum brightness. | Confirmed. In our bench test, counting frames between peaks shows a blink rate of about 4.5–5 Hz.  The rear turn panels run the added sequential "flowing" animation (six rows lit in order) while the signal is active, which was verified visually in the video.                                                                                                                        |
-| SRS-07 | The front display shall present motion-related feedback derived from IMU data at a usable update rate.                                    | Partially confirmed.  We implemented real-time display of the LSM6DS0 acceleration on the front LCD at the desired refresh rate and verified the values respond to tilting and braking.  However, due to IMU noise and limited time to design better filtering, we did not compute or show a stable velocity estimate, so the original "speed display" part of SRS-07 is only partially met. |
-
+| ID     | Description                                                                                                                              | Validation Outcome                                                                                                                                                                                                                                                                                                                                                                           |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-01 | The front joystick shall command Left, Right turn modes; the corresponding rear LED panels shall blink at 4–6 Hz at maximum brightness. | Confirmed. In our bench test, counting frames between peaks shows a blink rate of about 4.5–5 Hz.  The rear turn panels run the added sequential "flowing" animation (six rows lit in order) while the signal is active, which was verified visually in the video.                                                                                                                          |
+| SRS-07 | The front display shall present motion-related feedback derived from IMU data at a usable update rate.                                   | Partially confirmed.  We implemented real-time display of the LSM6DS0 acceleration on the front LCD at the desired refresh rate and verified the values respond to tilting and braking.  However, due to IMU noise and limited time to design better filtering, we did not compute or show a stable velocity estimate, so the original "speed display" part of SRS-07 is only partially met. |
 
 #### 3.2 Hardware Requirements Specification (HRS) Results
 
-
 On the hardware side, most HRS items were satisfied with the substituted components, but a few were only partially validated. Because the LM2596 buck module didn't arrive, we did not perform a full battery-powered stress test for  HRS-01 (5 V rail ≥4.8 V under all loads) ;  instead we powered the system from USB supply and made sure the system voltage is stable enough to meet the requirements when both turn panels, the brake LED, the buzzer, and sensors were active. We also reserved space for a 9 V battery; if the buck module is available, the entire system can switch to be powered from the battery. For HRS-03 (IMU interface reliability) we were able to read LSM6DS0 data over I²C at the desired rate, but the noise level made accurate real-time speed estimation difficult. BLE range (HRS-04), ultrasonic ECHO quality (HRS-02), and fail-safe brake behavior (HRS-05) all behaved as specified in indoor tests. In addition, we optimized the rear-end wiring layout to increase the system's level of integration, allowing all functions to be implemented within a small enclosure.
-
 
 | ID     | Description                                                                                                                                                                                  | Validation Outcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | HRS-01 | The system shall be powered from a regulated 5 V rail; under full load the voltage shall not drop below 4.8 V.                                                                               | Partially confirmed. Because the LM2596 buck module did not arrive, we powered the rear module from a lab USB 5 V supply and measured VCC with a multimeter while both turn panels, the brake LED, buzzer, ultrasonic sensor, BLE, and IMU were active. The voltage stayed between 4.92 V and 5.00 V, satisfying the requirement in this configuration. We reserved space for a 9 V battery in the enclosure so that, if the buck module is available, the same test can be repeated under battery power. |
 | HRS-08 | The rear-end electronics (MCU, LEDs, sensors, and connectors) shall be wired and integrated compactly enough to fit inside the designed 3D-printed enclosure without excessive loose wiring. | Confirmed. After simplifying the rear wiring harness and rerouting power and signal lines, we assembled the full rear module (ATmega board, WS2812B panels, ultrasonic sensor, IMU, buzzer, and BLE module) into the 3D-printed housing. All connectors could be plugged in without strain, the enclosure could be fully closed, and the system operated normally during bench tests and short walk tests, demonstrating that all functions can run within the small integrated enclosure.                |
 
-
 ### 4. Conclusion
-
 
 This project was our first time building a complete end-to-end embedded system that combined wireless communication, sensing, power electronics, and custom mechanical design. We started with an ambitious smart bike light concept and ended with a working prototype that can blink left/right/hazard turn signals, detect approaching vehicles with an ultrasonic sensor, react to hard braking, and fall back to a safe pattern when the BLE link is lost. It also fits into our 3D-printed enclosures, rather than just living on a breadboard.
 
-
 Several parts of the design worked especially well. The rear timer-based state machine gave us a flexible way to layer non-blocking blink patterns, buzzer beeps, and link-loss timeouts once we had a reliable millis() timebase. The ultrasonic driver and distance-based warning logic met our update-rate and error goals with only simple filtering. On the mechanical side, all three of us had to learn 3D modeling from scratch, but we iterated quickly and produced front and rear housings that actually hold the boards and wiring cleanly.
-
 
 We also faced challenges that forced us to adjust our plan. Delays in the original BOM pushed us to redesign around lab-available ESP32, HC-05, and LSM6DS0 boards, and to swap the speaker for a buzzer, which required firmware changes and small SRS updates. Turning raw accelerometer data into a stable speed estimate was harder than expected because of noise and tilt, so the LCD speed display remains more of a prototype than a reliable speedometer. Looking ahead, we would add backup parts earlier, start with a minimal “walking prototype” sooner, and invest in better automated test scripts. For future work, we hope to finish IMU-based speed estimation, move fully to a battery-powered outdoor setup with more rugged hardware, and explore richer LED patterns and brightness control to push the system closer to a polished product.
 
-
 ## References
-
