@@ -39,7 +39,7 @@ The purpose of this project is to enhance night-riding safety, demonstrate real-
 
 ### 4. Design Sketches
 
-![Final proposal #4](/images/Final%20proposal%20#4%20Front.jpg)
+![Final proposal #4](/images/Final%20proposal%20%234%20Front.jpg)
 ![Final proposal #4](/images/Final%20proposal%20%234%20Rear.jpg)
 
 This project needs 3D printing to achieve the vision looks like the sketches and some function, such as being connected and fixed to the bicycle frame or seat.
@@ -95,12 +95,12 @@ Here, you will define any special terms, acronyms, or abbreviations you plan to 
 | ID                                           | Hardware Requirement                                                                                                                                                                                               | Validation Method                                                                                  |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
 | HRS-01 (Power Integrity)                     | The system shall be powered by a regulated 5 V rail on both modules. With all loads active (LEDs + buzzer + sensors + MCU), the voltage shall not drop below 4.8 V .                                              | Measure Vout using oscilloscope under full-load stress (turn signals 2 Hz + brake on + buzzer on). |
-| HRS-03 (Ultrasonic Sensor Performance)       | The US sensor shall detect obstacles from 0.2 m to ≥ 3.0 m , and produce a clean5 V TTL ECHO pulsemeasurable by the MCU timer.                                                                                    | Place objects at known distances (0.2/1/2/3 m); confirm Echo pulse width and measurement error.    |
-| HRS-04 (Accelerometer Interface Reliability) | The LSM6DS3 shall provide stable acceleration data via I²C at ≥ 100k Hz , with signal noise not preventing braking detection.                                                                                   | Poll and log ACC output for 10 s; confirm ≥ 100k samples/sec and stable noise band.              |
-| HRS-05 (BLE Link Budget & Range)            | The BLE link via HM-10 shall maintain a stable UART connection over ≥ 2 m indoor line-of-sight withpacket error rate < 1% .                                                                                      | Perform BLE distance walk test; compare Rx vs. Tx byte counts in UART log.                         |
-| HRS-06 (Fail-Safe Hardware Behavior)         | When BLE link is lost, or when the MCU resets/browns-out, the rear system hardware shall ensurethe Brake LED defaults ON(via pull-up or safe-bias), providing continuous visibility even before firmware recovers. | Power-cycle BLE / press reset / induce brown-out; visually confirm Brake LED stays on.             |
-| HRS-07 (Buzzer Output)                      | The buzzer drive stage shall deliver ≥60 dB SPL at 30 cm when activated, and be fully switch-controllable by the MCU (no audible leakage in idle).                                                                | Measure SPL using phone app at 30 cm; verify silence in idle via oscilloscope.                     |
-| HRS-08 (Front LCD Interface)                | The LCD interface shall support ≥ 5 Hz refresh without causing missed BLE packets or sensor sampling on the front MCU.                                                                                            | Run refresh test; confirm stable BLE log + LCD updates with stopwatch timing.                      |
+| HRS-02 (Ultrasonic Sensor Performance)       | The US sensor shall detect obstacles from 0.2 m to ≥ 3.0 m , and produce a clean5 V TTL ECHO pulsemeasurable by the MCU timer.                                                                                    | Place objects at known distances (0.2/1/2/3 m); confirm Echo pulse width and measurement error.    |
+| HRS-03 (Accelerometer Interface Reliability) | The LSM6DS3 shall provide stable acceleration data via I²C at ≥ 100k Hz , with signal noise not preventing braking detection.                                                                                   | Poll and log ACC output for 10 s; confirm ≥ 100k samples/sec and stable noise band.              |
+| HRS-04 (BLE Link Budget & Range)             | The BLE link via HM-10 shall maintain a stable UART connection over ≥ 2 m indoor line-of-sight withpacket error rate < 1% .                                                                                      | Perform BLE distance walk test; compare Rx vs. Tx byte counts in UART log.                         |
+| HRS-05 (Fail-Safe Hardware Behavior)         | When BLE link is lost, or when the MCU resets/browns-out, the rear system hardware shall ensurethe Brake LED defaults ON(via pull-up or safe-bias), providing continuous visibility even before firmware recovers. | Power-cycle BLE / press reset / induce brown-out; visually confirm Brake LED stays on.             |
+| HRS-06 (Buzzer Output)                       | The buzzer drive stage shall deliver ≥60 dB SPL at 30 cm when activated, and be fully switch-controllable by the MCU (no audible leakage in idle).                                                                | Measure SPL using phone app at 30 cm; verify silence in idle via oscilloscope.                     |
+| HRS-07 (Front LCD Interface)                 | The LCD interface shall support ≥ 5 Hz refresh without causing missed BLE packets or sensor sampling on the front MCU.                                                                                            | Run refresh test; confirm stable BLE log + LCD updates with stopwatch timing.                      |
 
 ### 7. Bill of Materials (BOM)
 
@@ -256,83 +256,110 @@ This approach will allow the team to continue making meaningful progress toward 
 
 ## MVP Demo
 
-1. Show a system block diagram & explain the hardware implementation.
-2. Explain your firmware implementation, including application logic and critical drivers you've written.
-3. Demo your device.
-4. Have you achieved some or all of your Software Requirements Specification (SRS)?
+1. *Show a system block diagram & explain the hardware implementation.*
+   ![NBD](/images/NewBlockDiagram.png)
 
-   1. Show how you collected data and the outcomes.
-5. Have you achieved some or all of your Hardware Requirements Specification (HRS)?
+   Compared with our initial project design, we had to make several adjustments because the ordered components have not arrived yet. To keep the project moving, we switched to parts available in the lab and still managed to implement all the basic functions. On the hardware side, for the front-end we replaced the original MCU with the lab's ESP32-WROOM, which also integrates Bluetooth and can communicate with the HC-05 module. We also simplified the user interface: instead of using two separate buttons for left and right turn signals as in the original design, we now use a single joystick to control both directions. This allows the user to operate the system with one hand and reduces overall complexity. For the display, we chose a smaller LCD screen that was available in the lab.
 
-   1. Show how you collected data and the outcomes.
-6. Show off the remaining elements that will make your project whole: mechanical casework, supporting graphical user interface (GUI), web portal, etc.
+   On the back-end side, we replaced the original Bluetooth module with an HC-05, which is more common and easier to pair with the front-end ESP32-WROOM. At the same time, we changed the accelerometer to the lab's SparkFun LSM6DS0 6DoF IMU. Because the speaker module hasn't arrived, we used a buzzer instead to test the system. These substitutions keep our system architecture close to the original plan while making sure we can test and demonstrate all core functions even before the final components arrive.
+2. *Explain your firmware implementation, including application logic and critical drivers you've written.*
+
+   Our firmware is organized around a simple main loop plus a few key drivers for sensing, communication, and LEDs/buzzer control. We initialize the timer, ultrasonic sensor, IMU, buzzer, rear BLE link, and brake/turn LEDs. Then we run a 50 ms loop where we read distance from the ultrasonic sensor, check new turn commands from BLE, read the IMU X-axis acceleration to detect braking, and pass these signals into a small rear state machine. The state machine decides the current brake mode (idle, warning, burst, link-loss) and turn mode (left, right, hazard, off), and the outputs are then mapped to the brake LED, turn LEDs, and buzzer.
+
+   The critical drivers are kept small and focused. The timer driver gives us a millis() function using an ISR, and we use this timebase for non-blocking patterns like the buzzer beeping and BLE timeouts. The ultrasonic driver uses the input-capture unit to measure the echo pulse width and convert it into distance. The IMU driver configures the SparkFun LSM6DS0 over I²C, reads the acceleration registers, and provides a simple deceleration flag for the state machine. The BLE/UART driver parses single-character commands from the front unit and periodically sends back a short status message so we can also detect link loss. Finally, the LED and buzzer drivers just expose simple functions like “set brake mode” or “set turn mode” and apply the correct pin outputs, which keeps the application logic easy to follow.
+3. *Demo your device.*
+
+   Our group completed the demo with the teaching team on Monday, 11/24.
+4. *Have you achieved some or all of your Software Requirements Specification (SRS)?*
+
+   We have achieved most of the SRS items, and we have already collected preliminary data using the lab-available hardware. For SRS-01, although we replaced the original button design with a joystick, the functionality is fully preserved. By sending left/right/hazard commands through the joystick, we verified the correct LED behavior on the rear module. Using our rear BLE logs and visual checks, we confirmed that the system consistently responds with the correct turn-signal mode.
+
+   For  SRS-03 , we did not implement the“warning flash”state. After re-evaluating the real-world use case, we felt that introducing a mid-level brake signal was not necessary for safety. Instead, we directly use the burst strobe mode for close-range alerts.
+
+   For  SRS-07 , we have not finished the speed display. The accelerometer readings from the LSM6DS0 are still noisy, so we cannot yet compute stable velocity for LCD output. We plan to complete IMU filtering and velocity estimation next week.
+
+   All other SRS items have been implemented and tested. To collect data, we logged ultrasonic readings at ≥10 Hz, monitored IMU deceleration flags. The BLE link-loss behavior was validated by intentionally powering off the front module and observing that the brake LED enters the correct fail-safe pattern.
+5. *Have you achieved some or all of your Hardware Requirements Specification (HRS)?*
+
+   Most HRS items have also been satisfied using the components currently available in the lab. For  HRS-01 , we could not test the full battery-powered setup because the DC-DC buck converter module has not arrived. However, we ran the entire system from USB power and confirmed that the voltage remained stable even under maximum load. This gives us confidence that the power requirement will still hold once the final regulator arrives.
+
+   For  HRS-03,  the accelerometer output still fluctuates more than expected, and this affects speed calculation. We need another round of tuning to stabilize the raw acceleration data.
+
+   All remaining hardware requirements have been met. We validated these by taking short walk-tests for BLE, placing fixed objects at 0.2–3 m for ultrasonic calibration, performing brown-out/reset tests to check the default brake LED behavior. The LCD control also works reliably at 5 Hz refresh during basic tests.
+6. *Show off the remaining elements that will make your project whole: mechanical casework, supporting graphical user interface (GUI), web portal, etc.*
+
+   Next, we will redesign both the front and rear enclosures based on the updated hardware choices and send the new models for 3D printing. Once all components arrive, we will assemble them with the printed parts. For the LED section in particular, we also need to finalize the LED programming. In parallel, we will continue the final round of functional debugging to make sure all requirements are met, with a special focus on the acceleration/velocity pipeline and its accuracy.
 7. What is the riskiest part remaining of your project?
 
-   1. How do you plan to de-risk this?
+   the acceleration data from the IMU is currently not stable enough to compute accurate real-time speed. This is because the LSM6DS0 is capturing not only linear acceleration but also components related to angular motion. In our updates next week, we plan to either remove the influence of angular acceleration in the calculation or add an appropriate filter to suppress it and then evaluate the effect on the speed estimation.
 8. What questions or help do you need from the teaching team?
+
+   We hope our necessary components can arrive in time.
 
 ## Final Project Report
 
-Don't forget to make the GitHub pages public website!
-If you’ve never made a GitHub pages website before, you can follow this webpage (though, substitute your final project repository for the GitHub username one in the quickstart guide):  [https://docs.github.com/en/pages/quickstart](https://docs.github.com/en/pages/quickstart)
 
 ### 1. Video
 
-[Insert final project video here]
 
-* The video must demonstrate your key functionality.
-* The video must be 5 minutes or less.
-* Ensure your video link is accessible to the teaching team. Unlisted YouTube videos or Google Drive uploads with SEAS account access work well.
-* Points will be removed if the audio quality is poor - say, if you filmed your video in a noisy electrical engineering lab.
+Here's the link to the video:
+[https://drive.google.com/file/d/1-fA520SwYSS5Ujw18yyUZQzBwJccTLxQ/view?usp=sharing](https://drive.google.com/file/d/1-fA520SwYSS5Ujw18yyUZQzBwJccTLxQ/view?usp=sharing)
+
 
 ### 2. Images
 
-[Insert final project images here]
 
-*Include photos of your device from a few angles. If you have a casework, show both the exterior and interior (where the good EE bits are!).*
+![Final_Image_Rear](/images/Final_Image_Rear.jpg)
+![Final_Image_Together](/images/Final_Image_Together.jpg)
+
 
 ### 3. Results
 
-*What were your results? Namely, what was the final solution/design to your problem?*
+
+Our final system is a two-module smart bicycle lighting kit. The front handlebar unit is based on an ESP32-WROOM dev board with a joystick and LCD: the joystick selects left/right, and the ESP32 sends single-character commands over Bluetooth to the rear unit while also receiving basic data for on-screen status. The rear module uses an ATmega328PB to drive three LED functions (left/right turn, brake), a buzzer, an ultrasonic distance sensor, and an IMU for deceleration-based brake triggering. A timer-based state machine reads the turn-signal commands, the ultrasonic distance, and the IMU deceleration, then decides whether the rear light should stay idle, show a steady brake light, flash in a warning or burst pattern.
+
+
+Because many of the original BOM parts did not arrive on time, we substituted all parts to lab-available components, but we kept the behavior of the SRS/HRS as close to the original specification as possible. In practice, we successfully assembled all of the hardware and integrated every component into our 3D-printed front and rear models. We were able to demonstrate reliable turn-signal control, ultrasonic-triggered warning and burst modes, BLE link-loss safety behavior, and basic IMU-based brake detection during short walk tests.
+
 
 #### 3.1 Software Requirements Specification (SRS) Results
 
-*Based on your quantified system performance, comment on how you achieved or fell short of your expected requirements.*
 
-*Did your requirements change? If so, why? Failing to meet a requirement is acceptable; understanding the reason why is critical!*
+Overall we achieved most of the originally defined SRS requirements, with a few intentional changes. We partially met SRS-07; in our final result, the front end only displays the acceleration returned by the accelerometer and does not calculate the velocity, because the LSM6DS0 acceleration remained noisy and our simple integration is not able to give a stable real-time speed estimate in the time available.
 
-*Validate at least two requirements, showing how you tested and your proof of work (videos, images, logic analyzer/oscilloscope captures, etc.).*
 
-| ID     | Description                                                                                               | Validation Outcome                                                                          |
-| ------ | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| SRS-01 | The IMU 3-axis acceleration will be measured with 16-bit depth every 100 milliseconds +/-10 milliseconds. | Confirmed, logged output from the MCU is saved to "validation" folder in GitHub repository. |
+In addition to meeting the basic turn-signal behavior in SRS-01, we also added a sequential "flowing" animation for the rear turn panels. Instead of blinking all 15 LEDs on a side at once, the firmware groups the WS2812B pixels into six rows and lights them in order while the turn signal is active. This creates a clear sweeping motion in the direction of the turn, making the rider’s intent more obvious to following drivers, similar to modern automotive sequential turn indicators.
+
+
+| ID     | Description                                                                                                                               | Validation Outcome                                                                                                                                                                                                                                                                                                                                                                           |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-01 | The front joystick shall command Left, Right turn modes; the corresponding rear LED panels shall blink at 4–6 Hz at maximum brightness. | Confirmed. In our bench test, counting frames between peaks shows a blink rate of about 4.5–5 Hz.  The rear turn panels run the added sequential "flowing" animation (six rows lit in order) while the signal is active, which was verified visually in the video.                                                                                                                        |
+| SRS-07 | The front display shall present motion-related feedback derived from IMU data at a usable update rate.                                    | Partially confirmed.  We implemented real-time display of the LSM6DS0 acceleration on the front LCD at the desired refresh rate and verified the values respond to tilting and braking.  However, due to IMU noise and limited time to design better filtering, we did not compute or show a stable velocity estimate, so the original "speed display" part of SRS-07 is only partially met. |
+
 
 #### 3.2 Hardware Requirements Specification (HRS) Results
 
-*Based on your quantified system performance, comment on how you achieved or fell short of your expected requirements.*
 
-*Did your requirements change? If so, why? Failing to meet a requirement is acceptable; understanding the reason why is critical!*
+On the hardware side, most HRS items were satisfied with the substituted components, but a few were only partially validated. Because the LM2596 buck module didn't arrive, we did not perform a full battery-powered stress test for  HRS-01 (5 V rail ≥4.8 V under all loads) ;  instead we powered the system from USB supply and made sure the system voltage is stable enough to meet the requirements when both turn panels, the brake LED, the buzzer, and sensors were active. We also reserved space for a 9 V battery; if the buck module is available, the entire system can switch to be powered from the battery. For HRS-03 (IMU interface reliability) we were able to read LSM6DS0 data over I²C at the desired rate, but the noise level made accurate real-time speed estimation difficult. BLE range (HRS-04), ultrasonic ECHO quality (HRS-02), and fail-safe brake behavior (HRS-05) all behaved as specified in indoor tests. In addition, we optimized the rear-end wiring layout to increase the system's level of integration, allowing all functions to be implemented within a small enclosure.
 
-*Validate at least two requirements, showing how you tested and your proof of work (videos, images, logic analyzer/oscilloscope captures, etc.).*
 
-| ID     | Description                                                                                                                        | Validation Outcome                                                                                                      |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| HRS-01 | A distance sensor shall be used for obstacle detection. The sensor shall detect obstacles at a maximum distance of at least 10 cm. | Confirmed, sensed obstacles up to 15cm. Video in "validation" folder, shows tape measure and logged output to terminal. |
-|        |                                                                                                                                    |                                                                                                                         |
+| ID     | Description                                                                                                                                                                                  | Validation Outcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HRS-01 | The system shall be powered from a regulated 5 V rail; under full load the voltage shall not drop below 4.8 V.                                                                               | Partially confirmed. Because the LM2596 buck module did not arrive, we powered the rear module from a lab USB 5 V supply and measured VCC with a multimeter while both turn panels, the brake LED, buzzer, ultrasonic sensor, BLE, and IMU were active. The voltage stayed between 4.92 V and 5.00 V, satisfying the requirement in this configuration. We reserved space for a 9 V battery in the enclosure so that, if the buck module is available, the same test can be repeated under battery power. |
+| HRS-08 | The rear-end electronics (MCU, LEDs, sensors, and connectors) shall be wired and integrated compactly enough to fit inside the designed 3D-printed enclosure without excessive loose wiring. | Confirmed. After simplifying the rear wiring harness and rerouting power and signal lines, we assembled the full rear module (ATmega board, WS2812B panels, ultrasonic sensor, IMU, buzzer, and BLE module) into the 3D-printed housing. All connectors could be plugged in without strain, the enclosure could be fully closed, and the system operated normally during bench tests and short walk tests, demonstrating that all functions can run within the small integrated enclosure.                |
+
 
 ### 4. Conclusion
 
-Reflect on your project. Some questions to address:
 
-* What did you learn from it?
-* What went well?
-* What accomplishments are you proud of?
-* What did you learn/gain from this experience?
-* Did you have to change your approach?
-* What could have been done differently?
-* Did you encounter obstacles that you didn’t anticipate?
-* What could be a next step for this project?
+This project was our first time building a complete end-to-end embedded system that combined wireless communication, sensing, power electronics, and custom mechanical design. We started with an ambitious smart bike light concept and ended with a working prototype that can blink left/right/hazard turn signals, detect approaching vehicles with an ultrasonic sensor, react to hard braking, and fall back to a safe pattern when the BLE link is lost. It also fits into our 3D-printed enclosures, rather than just living on a breadboard.
+
+
+Several parts of the design worked especially well. The rear timer-based state machine gave us a flexible way to layer non-blocking blink patterns, buzzer beeps, and link-loss timeouts once we had a reliable millis() timebase. The ultrasonic driver and distance-based warning logic met our update-rate and error goals with only simple filtering. On the mechanical side, all three of us had to learn 3D modeling from scratch, but we iterated quickly and produced front and rear housings that actually hold the boards and wiring cleanly.
+
+
+We also faced challenges that forced us to adjust our plan. Delays in the original BOM pushed us to redesign around lab-available ESP32, HC-05, and LSM6DS0 boards, and to swap the speaker for a buzzer, which required firmware changes and small SRS updates. Turning raw accelerometer data into a stable speed estimate was harder than expected because of noise and tilt, so the LCD speed display remains more of a prototype than a reliable speedometer. Looking ahead, we would add backup parts earlier, start with a minimal “walking prototype” sooner, and invest in better automated test scripts. For future work, we hope to finish IMU-based speed estimation, move fully to a battery-powered outdoor setup with more rugged hardware, and explore richer LED patterns and brightness control to push the system closer to a polished product.
+
 
 ## References
 
-Fill in your references here as you work on your final project. Describe any libraries used here.
