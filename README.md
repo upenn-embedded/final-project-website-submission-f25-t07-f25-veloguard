@@ -20,7 +20,8 @@
 
 **VeloGuard** is a smart, wireless bicycle safety system designed to enhance rider visibility and road safety. Comprising a handlebar control unit and a rear signal module linked via Bluetooth (BLE), the system features intuitive  **turn signals** , an automatic **brake light** triggered by deceleration, and a **proximity alarm** that warns riders of approaching vehicles using ultrasonic sensing. Housed in custom 3D-printed enclosures, VeloGuard demonstrates a complete end-to-end embedded system integration, combining real-time sensor processing with robust wireless communication.
 
-[https://drive.google.com/file/d/1-fA520SwYSS5Ujw18yyUZQzBwJccTLxQ/view?usp=sharing](https://drive.google.com/file/d/1-fA520SwYSS5Ujw18yyUZQzBwJccTLxQ/view?usp=sharing)
+[![Watch the Final Demo](./images/video_cover.jpg)](https://drive.google.com/file/d/1-fA520SwYSS5Ujw18yyUZQzBwJccTLxQ/view?usp=sharing)
+*(Click the image above to watch the full demo on Google Drive)*
 
 ## 2. Images
 
@@ -43,8 +44,6 @@ Because many of the original BOM parts did not arrive on time, we substituted al
 Overall we achieved most of the originally defined SRS requirements, with a few intentional changes. We partially met SRS-07; in our final result, the front end only displays the acceleration returned by the accelerometer and does not calculate the velocity, because the LSM6DS0 acceleration remained noisy and our simple integration is not able to give a stable real-time speed estimate in the time available.
 
 In addition to meeting the basic turn-signal behavior in SRS-01, we also added a sequential "flowing" animation for the rear turn panels. Instead of blinking all 15 LEDs on a side at once, the firmware groups the WS2812B pixels into six rows and lights them in order while the turn signal is active. This creates a clear sweeping motion in the direction of the turn, making the rider’s intent more obvious to following drivers, similar to modern automotive sequential turn indicators.
-
-![FunctionalVerification](./images/FunctionalVerification.png)
 
 | ID               | Requirement Description                                                                                                                                      | Validation Method & Proof of Work                                                                                                                                                                                                                                                                                           |
 | :--------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
