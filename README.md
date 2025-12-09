@@ -68,27 +68,38 @@ We also reserved space for a 9V battery; if the buck module is available, the en
 ### 3.3 Video & Images of Test Results
 
 ![FunctionalVerification](./images/FunctionalVerification.png)
+Serial Monitor Output
 
-
-<video width="100%" controls>
-  <source src="./images/MVP demo.mp4" type="video/mp4">
-  Your browser might not support the video tag.
-</video>
 
 <video width="100%" controls>
   <source src="./images/Turn Signal LED.mp4" type="video/mp4">
   Your browser might not support the video tag.
 </video>
 
+[Turn Signal LED](https://drive.google.com/file/d/1zH5_9DcnB6lbUJCXdtdREsKz1BNkY7Rs/view?usp=drive_link)
+
+
 <video width="100%" controls>
   <source src="./images/US & Buzzer.mp4" type="video/mp4">
   Your browser might not support the video tag.
 </video>
 
+[US & Buzzer](https://drive.google.com/file/d/1GsZcg9maPZfclC8pjq5z__5zylxA4hr6/view?usp=drive_link)
+
 <video width="100%" controls>
   <source src="./images/BLE Link.mp4" type="video/mp4">
   Your browser might not support the video tag.
 </video>
+
+[BLE Link](https://drive.google.com/file/d/1Ok4BWovijY28dvywc66ABTtSwM4vUoqr/view?usp=drive_link)
+
+<video width="100%" controls>
+  <source src="./images/MVP demo.mp4" type="video/mp4">
+  Your browser might not support the video tag.
+</video>
+
+[MVP demo](https://drive.google.com/file/d/1Ok4BWovijY28dvywc66ABTtSwM4vUoqr/view?usp=drive_link)
+
 
 ## 4. Conclusion
 
