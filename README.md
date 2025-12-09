@@ -69,6 +69,27 @@ We also reserved space for a 9V battery; if the buck module is available, the en
 
 ![FunctionalVerification](./images/FunctionalVerification.png)
 
+
+<video width="100%" controls>
+  <source src="./images/MVP demo.mp4" type="video/mp4">
+  Your browser might not support the video tag.
+</video>
+
+<video width="100%" controls>
+  <source src="./images/Turn Signal LED.mp4" type="video/mp4">
+  Your browser might not support the video tag.
+</video>
+
+<video width="100%" controls>
+  <source src="./images/US & Buzzer.mp4" type="video/mp4">
+  Your browser might not support the video tag.
+</video>
+
+<video width="100%" controls>
+  <source src="./images/BLE Link.mp4" type="video/mp4">
+  Your browser might not support the video tag.
+</video>
+
 ## 4. Conclusion
 
 This project represented our team's first successful deployment of a comprehensive embedded system, integrating wireless communication, real-time sensing, and custom mechanical design. Despite facing significant supply chain delays that necessitated major hardware substitutions, we successfully adapted our firmware architecture to deliver a functional prototype featuring reliable turn signals, ultrasonic proximity alerts, and fail-safe mechanisms. While challenges with accelerometer noise limited the precision of our speed tracking feature, the project validated the robustness of our state-machine control logic and enclosure design.
